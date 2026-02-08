@@ -108,9 +108,13 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-[#F8FAFF]">
       
-      {/* LEFT SIDE */}
+      {/* LEFT SIDE - half blurred / half solid ball */}
       <div className="relative hidden md:flex items-center justify-center bg-[#F8FAFF] overflow-hidden">
-        <div className="w-72 h-72 rounded-full bg-[#4F6EF7] blur-[2px]" />
+        <div className="relative w-72 h-72 rounded-full overflow-hidden">
+          <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-[#4F6EF7]" />
+          <div className="absolute top-0 left-0 right-0 h-1/2 bg-[#7B9AFF] blur-xl" />
+          <div className="absolute top-1/2 left-0 right-0 h-px bg-white -translate-y-1/2 z-10" />
+        </div>
       </div>
 
       {/* RIGHT SIDE */}

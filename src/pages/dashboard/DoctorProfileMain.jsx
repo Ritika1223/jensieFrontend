@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Star } from "lucide-react";
+import { API_URL } from "../../config/api.js";
 
-const API_BASE = "https://jensiebackend-1.onrender.com/api/doctor";
+const API_BASE = `${API_URL}/api/doctor`;
 const DEMO_DOCTOR_IMAGE = "/landing-page/doctors/doctor-1.png";
 
 export default function DoctorProfileMain(props) {
@@ -18,18 +19,12 @@ export default function DoctorProfileMain(props) {
       return;
     }
 
-    const doctorId = localStorage.getItem("doctorId");
-    if (!doctorId) {
-      setError("Doctor ID is missing. Please log in again.");
-      setLoading(false);
-      return;
-    }
-
     const fetchProfile = async () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await axios.get(`${API_BASE}/${doctorId}`, {
+        // Use /profile endpoint – backend gets doctorId from JWT token
+        const res = await axios.get(`${API_BASE}/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const raw = res.data?.doctor ?? res.data?.user ?? res.data?.data ?? res.data;

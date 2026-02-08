@@ -24,7 +24,7 @@ import {
   X,
 } from "lucide-react";
 
-const API_BASE = `https://jensiebackend-1.onrender.com/api/doctor`;
+const API_BASE = `${API_URL}/api/doctor`;
 
 // Demo doctor image (from public folder) – used when no image from API or on load error
 const DEMO_DOCTOR_IMAGE = "/landing-page/doctors/doctor-1.png";
@@ -163,7 +163,7 @@ export default function DoctorsProfilePage() {
     setProfile(editForm);
     setEditModalOpen(false);
     const token = localStorage.getItem("token");
-    const doctorId = localStorage.getItem("doctorId");
+    const doctorId = localStorage.getItem("doctorId") || profile?._id || profile?.doctorId;
     if (token && doctorId) {
       const payload = {
         name: editForm.name || undefined,
@@ -192,20 +192,24 @@ export default function DoctorsProfilePage() {
     "https://images.unsplash.com/photo-1581595220892-b0739db3ba8c?w=400&q=80",
   ];
 
+  // Merge profile: raw from /profile or /:doctorId has real name/email; raw-profile has fallback data
   const mapRawToProfile = (raw, prev) => {
     if (!raw || typeof raw !== "object") return prev;
     const first = raw.firstName ?? raw.first_name ?? "";
     const last = raw.lastName ?? raw.last_name ?? "";
+    const rawName = raw.name ?? ([first, last].filter(Boolean).join(" ").trim() || null);
+    const rawEmail = raw.email ?? null;
     return {
       ...prev,
-      name: raw.name ?? ([first, last].filter(Boolean).join(" ") || prev.name),
+      // Name & email: fromId = real doctor (ID fetch); else raw-profile fallback
+      name: rawName || prev.name,
+      email: rawEmail ?? prev.email,
       specialty: raw.specialty ?? raw.speciality ?? prev.specialty,
       image: raw.image ?? raw.avatar ?? raw.photo ?? DEMO_DOCTOR_IMAGE,
       rating: raw.rating ?? raw.overallRating ?? prev.rating,
       overallRating: raw.overallRating ?? raw.rating ?? prev.overallRating,
       totalRatings: raw.totalRatings ?? raw.total_ratings ?? raw.totalPatients ?? raw.patientCount ?? prev.totalRatings,
       verified: raw.verified ?? prev.verified,
-      email: raw.email ?? prev.email,
       location: raw.location ?? raw.city ?? prev.location,
       about: raw.about ?? raw.bio ?? prev.about,
       education: raw.education ?? prev.education,
@@ -218,27 +222,33 @@ export default function DoctorsProfilePage() {
   };
 
   useEffect(() => {
-    const doctorId = localStorage.getItem("doctorId");
-    if (doctorId) {
-      const dateStr = `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-${String(selectedDate).padStart(2, "0")}`;
-      setSlotsLoading(true);
-      axios
-        .get(`${API_URL}/api/doctor/slots/${doctorId}?date=${dateStr}`)
-        .then((res) => {
-          const slots = res.data?.data?.availableSlots || [];
-          const byPeriod = { Morning: [], Afternoon: [], Evening: [], Night: [] };
-          slots.forEach((s) => {
-            const label = s.label || format24to12(s.startTime);
-            if (s.period && byPeriod[s.period]) byPeriod[s.period].push(label);
-          });
-          setSlotsFromApi(byPeriod);
-        })
-        .catch(() => setSlotsFromApi(null))
-        .finally(() => setSlotsLoading(false));
-    } else {
+    const doctorId = localStorage.getItem("doctorId") || profile?._id || profile?.doctorId;
+    if (!doctorId) {
       setSlotsFromApi(null);
+      return;
     }
-  }, [selectedDate, selectedMonth, selectedYear]);
+    let cancelled = false;
+    const dateStr = `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-${String(selectedDate).padStart(2, "0")}`;
+    (async () => {
+      setSlotsLoading(true);
+      try {
+        const res = await axios.get(`${API_URL}/api/doctor/slots/${doctorId}?date=${dateStr}`);
+        if (cancelled) return;
+        const slots = res.data?.data?.availableSlots || [];
+        const byPeriod = { Morning: [], Afternoon: [], Evening: [], Night: [] };
+        slots.forEach((s) => {
+          const label = s.label || format24to12(s.startTime);
+          if (s.period && byPeriod[s.period]) byPeriod[s.period].push(label);
+        });
+        setSlotsFromApi(byPeriod);
+      } catch {
+        if (!cancelled) setSlotsFromApi(null);
+      } finally {
+        if (!cancelled) setSlotsLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [selectedDate, selectedMonth, selectedYear, profile?._id, profile?.doctorId]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -250,22 +260,32 @@ export default function DoctorsProfilePage() {
         setProfile((prev) => mapRawToProfile(raw, prev));
       }).catch(() => {});
 
-    if (token && doctorId) {
+    if (token) {
+      // Prefer /profile – backend gets doctorId from JWT; name & email are real from ID
+      const applyIdData = (raw) => {
+        if (raw && typeof raw === "object") {
+          const id = raw._id ?? raw.doctorId;
+          if (id && !localStorage.getItem("doctorId")) localStorage.setItem("doctorId", String(id));
+          setProfile((prev) => mapRawToProfile(raw, prev));
+          return true;
+        }
+        return false;
+      };
+
+      const loadFallback = () =>
+        doctorId
+          ? axios.get(`${API_BASE}/${doctorId}`, { headers: { Authorization: `Bearer ${token}` } })
+              .then((res) => { const raw = res.data?.doctor ?? res.data?.user ?? res.data?.data ?? res.data; if (!applyIdData(raw)) fetchRawProfile(); })
+              .catch(() => fetchRawProfile())
+          : fetchRawProfile();
+
       axios
-        .get(`${API_BASE}/${doctorId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        .get(`${API_BASE}/profile`, { headers: { Authorization: `Bearer ${token}` } })
         .then((res) => {
           const raw = res.data?.doctor ?? res.data?.user ?? res.data?.data ?? res.data;
-          if (raw && typeof raw === "object") {
-            setProfile((prev) => mapRawToProfile(raw, prev));
-          } else {
-            fetchRawProfile();
-          }
+          if (!applyIdData(raw)) return fetchRawProfile();
         })
-        .catch(() => {
-          fetchRawProfile();
-        })
+        .catch(() => loadFallback())
         .finally(() => setLoading(false));
     } else {
       fetchRawProfile().finally(() => setLoading(false));

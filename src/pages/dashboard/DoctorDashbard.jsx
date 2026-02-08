@@ -63,8 +63,8 @@ async function fetchDoctorsAppointmentsReal() {
     const doctorId = localStorage.getItem("doctorId");
     const token = localStorage.getItem("token");
     const url = doctorId
-      ? `${API_URL}/api/doctor/appointments/${doctorId}`
-      : `${API_URL}/api/doctor/appointments?date=${todayStr}`;
+      ? `https://jensiebackend-1.onrender.com/api/doctor/appointments/${doctorId}`
+      : `https://jensiebackend-1.onrender.com/api/doctor/appointments?date=${todayStr}`;
     const opts = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
     const res = await fetch(url, opts);
     if (!res.ok) throw new Error('Network response was not ok');
@@ -130,7 +130,7 @@ export default function Dashboard() {
   useEffect(() => {
     let ignore = false;
     setLoadingDashboard(true);
-    fetch(`${API_URL}/api/doctor/dashboard`)
+    fetch(`https://jensiebackend-1.onrender.com/api/doctor/dashboard`)
       .then((res) => res.ok ? res.json() : Promise.reject())
       .then((json) => {
         if (!ignore && json?.data) setDashboardData(json.data);

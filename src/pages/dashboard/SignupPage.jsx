@@ -2,7 +2,6 @@
   import axios from "axios";
   import { useNavigate, Link } from "react-router-dom";
 
-
   export default function Signup() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -35,10 +34,8 @@
 
     // 🔹 Send OTP
     const handleSendOtp = async () => {
-      // Do not clear errors here, so both new and previous field errors stay visible
       let newErrors = { ...errors };
 
-      // Validate fields and add errors without wiping out other errors
       if (!firstName?.trim()) newErrors.firstName = "First name is required";
       else delete newErrors.firstName;
       if (!lastName?.trim()) newErrors.lastName = "Last name is required";
@@ -64,7 +61,6 @@
           phone,
         });
         setOtpSent(true);
-        // Keep existing field errors except 'otpSentInfo'; don't remove other errors
         setErrors((prev) => ({
           ...prev,
           otpSentInfo: res.data.message || "OTP sent",
@@ -82,7 +78,6 @@
 
     // 🔹 Verify OTP
     const handleVerifyOtpOnly = async () => {
-      // Do not clear all errors, just update the 'otp' error if any
       if (!otp?.trim()) {
         setErrors((prev) => ({
           ...prev,
@@ -101,7 +96,6 @@
         setLoading(true);
         await axios.post(`${API_BASE}/verify-otp`, { phone, otp });
         setOtpVerified(true);
-        // Remove the otp error and otp verified info when OTP is verified
         setErrors((prev) => {
           const next = { ...prev };
           delete next.otp;
@@ -149,10 +143,8 @@
 
         localStorage.setItem("token", res.data.token);
 
-        // Show a small popup/notification using window.alert as a fallback since setSignupPopupOpen is undefined
         window.alert("Signup successful! Redirecting to login...");
 
-        // Navigate to login after 5 seconds
         setTimeout(() => {
           navigate("/doctor-login");
         }, 5000);
@@ -171,173 +163,190 @@
       }
     };
 
+    // Responsive class additions:
+    // - Use sm:px-2, px-4 for inner padding on mobile, reduce spacing
+    // - Change form width: w-full max-w-md mx-auto with flex-grow for the card
+    // - Stack inputs to 1 col on mobile using grid-cols-1
+    // - Add gap-x-0 sm:gap-x-4 to reduce spacing between first/last name on mobile
+    // - Hide left blue circle, but shrink and show it higher up if on small screens
+    // - min-h-screen flex-col on mobile, grid on md+
+    // - Set rounded, shadow on the card at all screen sizes
+
     return (
-      <div className="w-7xl rounded-2xl shadow">
-        <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-[#F8FAFF]">
-          
-          {/* LEFT SIDE */}
-          <div className="relative hidden md:flex items-center justify-center overflow-hidden">
-            <div className="absolute bottom-24 w-72 h-72 rounded-full bg-[#4F6EF7]" />
+      <div className="min-h-screen bg-[#F8FAFF] flex flex-col md:grid md:grid-cols-2">
+        {/* LEFT SIDE - half blurred / half solid ball (same as login) */}
+        <div className="relative hidden md:flex items-center justify-center overflow-hidden bg-[#F8FAFF]">
+          <div className="relative w-40 h-40 lg:w-72 lg:h-72 rounded-full overflow-hidden">
+            <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-[#4F6EF7]" />
+            <div className="absolute top-0 left-0 right-0 h-1/2 bg-[#7B9AFF] blur-xl" />
+            <div className="absolute top-1/2 left-0 right-0 h-px bg-white -translate-y-1/2 z-10" />
           </div>
+        </div>
 
-          {/* RIGHT SIDE */}
-          <div className="flex items-center justify-center px-6">
-            <div className="w-full max-w-md">
+        {/* RIGHT SIDE */}
+        <div className="flex items-center justify-center w-full py-8 px-2 sm:px-4 md:px-6">
+          <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-lg p-6 sm:p-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#0A1440] mb-2">
+              Create your account
+            </h1>
+            <p className="text-xs sm:text-sm text-gray-500 mb-6 sm:mb-8">
+              Get started with secure, guided health support.
+            </p>
 
-              <h1 className="text-3xl font-bold text-[#0A1440] mb-2">
-                Create your account
-              </h1>
-              <p className="text-sm text-gray-500 mb-8">
-                Get started with secure, guided health support.
-              </p>
-              
-             
-              {/* Name */}
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="text-xs text-gray-500">First name</label>
-                  <input
-                    value={firstName}
-                    onChange={(e) => {
-                      setFirstName(e.target.value);
-                      clearFieldError("firstName");
-                    }}
-                    type="text"
-                    className={`w-full mt-1 px-4 py-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#4F6EF7] ${errors.firstName ? "border-red-500 focus:ring-red-500" : ""}`}
-                  />
-                  {errors.firstName && (
-                    <p className="mt-1 text-xs text-red-600">{errors.firstName}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="text-xs text-gray-500">Last name</label>
-                  <input
-                    value={lastName}
-                    onChange={(e) => {
-                      setLastName(e.target.value);
-                      clearFieldError("lastName");
-                    }}
-                    type="text"
-                    className={`w-full mt-1 px-4 py-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#4F6EF7] ${errors.lastName ? "border-red-500 focus:ring-red-500" : ""}`}
-                  />
-                  {errors.lastName && (
-                    <p className="mt-1 text-xs text-red-600">{errors.lastName}</p>
-                  )}
-                </div>
-              </div>
-
-              {/* Mobile */}
-              <div className="mb-4">
-                <label className="text-xs text-gray-500">Mobile Number</label>
+            {/* Name */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-0 sm:gap-x-4 mb-4">
+              <div>
+                <label className="text-xs text-gray-500">First name</label>
                 <input
-                  value={phone}
+                  value={firstName}
                   onChange={(e) => {
-                    setPhone(e.target.value);
-                    clearFieldError("phone");
+                    setFirstName(e.target.value);
+                    clearFieldError("firstName");
                   }}
                   type="text"
-                  placeholder="+91 9876543210"
-                  className={`w-full mt-1 px-4 py-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#4F6EF7] ${errors.phone ? "border-red-500 focus:ring-red-500" : ""}`}
+                  className={`w-full mt-1 px-4 py-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#4F6EF7] ${
+                    errors.firstName ? "border-red-500 focus:ring-red-500" : ""
+                  }`}
                 />
-                {errors.phone && (
-                  <p className="mt-1 text-xs text-red-600">{errors.phone}</p>
+                {errors.firstName && (
+                  <p className="mt-1 text-xs text-red-600">{errors.firstName}</p>
                 )}
               </div>
-
-              {/* OTP */}
-              <div className="grid grid-cols-3 gap-4 mb-4">
-                <button
-                  onClick={handleSendOtp}
-                  disabled={loading}
-                  className="col-span-1 bg-[#4F6EF7] text-white rounded-lg text-sm"
-                >
-                  {otpSent ? "Resend OTP" : "Send OTP"}
-                </button>
-                <div className="col-span-2">
-                  <input
-                    placeholder="OTP"
-                    value={otp}
-                    onChange={(e) => {
-                      setOtp(e.target.value);
-                      clearFieldError("otp");
-                    }}
-                    disabled={!otpSent || otpVerified}
-                    className={`w-full px-4 py-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#4F6EF7] ${errors.otp ? "border-red-500 focus:ring-red-500" : ""}`}
-                  />
-                  {errors.otp && (
-                    <p className="mt-1 text-xs text-red-600">{errors.otp}</p>
-                  )}
-                </div>
-              </div>
-              {!otpVerified && otpSent && (
-                <button
-                  onClick={handleVerifyOtpOnly}
-                  disabled={loading}
-                  className="w-full mb-4 bg-[#4F6EF7] text-white py-3 rounded-lg"
-                >
-                  Verify OTP
-                </button>
-              )}
-
-              <div className="mb-6">
-                <label className="text-xs text-gray-500">Email</label>
+              <div>
+                <label className="text-xs text-gray-500">Last name</label>
                 <input
-                  type="email"
-                  placeholder="eg- abc@gmail.com"
-                  value={email}
+                  value={lastName}
                   onChange={(e) => {
-                    setEmail(e.target.value);
-                    clearFieldError("email");
+                    setLastName(e.target.value);
+                    clearFieldError("lastName");
                   }}
-                  className={`w-full mt-1 px-4 py-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#4F6EF7] ${errors.email ? "border-red-500 focus:ring-red-500" : ""}`}
+                  type="text"
+                  className={`w-full mt-1 px-4 py-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#4F6EF7] ${
+                    errors.lastName ? "border-red-500 focus:ring-red-500" : ""
+                  }`}
                 />
-                {errors.email && (
-                  <p className="mt-1 text-xs text-red-600">{errors.email}</p>
+                {errors.lastName && (
+                  <p className="mt-1 text-xs text-red-600">{errors.lastName}</p>
                 )}
               </div>
-              {otpVerified && (
-                <div className="mb-6">
-                  <label className="text-xs text-gray-500">Password</label>
-                  <input
-                    type="password"
-                    placeholder="Minimum 6 characters"
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      clearFieldError("password");
-                    }}
-                    className={`w-full mt-1 px-4 py-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#4F6EF7] ${errors.password ? "border-red-500 focus:ring-red-500" : ""}`}
-                  />
-                  {errors.password && (
-                    <p className="mt-1 text-xs text-red-600">{errors.password}</p>
-                  )}
-                </div>
-              )}
-
-              {/* Submit */}
-              <button
-                onClick={handleSignup}
-                className="w-full bg-[#4F6EF7] text-white py-3 rounded-lg font-medium hover:opacity-90 transition"
-              >
-                Sign up
-              </button>
-               {/* Added: Already have an account */}
-               <span className="block mb-4 mt-4 text-sm text-gray-700 text-center">
-                Already have an account?{" "}
-                <Link to="/doctor-login" className="text-[#4F6EF7] hover:underline">
-                  Go to login page
-                </Link>
-              </span>
-
-              {errors.general && (
-                <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
-                  {errors.general}
-                </div>
-              )}
-
-
-
             </div>
+
+            {/* Mobile */}
+            <div className="mb-4">
+              <label className="text-xs text-gray-500">Mobile Number</label>
+              <input
+                value={phone}
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                  clearFieldError("phone");
+                }}
+                type="text"
+                placeholder="+91 9876543210"
+                className={`w-full mt-1 px-4 py-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#4F6EF7] ${
+                  errors.phone ? "border-red-500 focus:ring-red-500" : ""
+                }`}
+              />
+              {errors.phone && (
+                <p className="mt-1 text-xs text-red-600">{errors.phone}</p>
+              )}
+            </div>
+
+            {/* OTP */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+              <button
+                onClick={handleSendOtp}
+                disabled={loading}
+                className="w-full sm:col-span-1 bg-[#4F6EF7] text-white rounded-lg text-sm py-3 sm:py-0"
+              >
+                {otpSent ? "Resend OTP" : "Send OTP"}
+              </button>
+              <div className="sm:col-span-2">
+                <input
+                  placeholder="OTP"
+                  value={otp}
+                  onChange={(e) => {
+                    setOtp(e.target.value);
+                    clearFieldError("otp");
+                  }}
+                  disabled={!otpSent || otpVerified}
+                  className={`w-full px-4 py-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#4F6EF7] ${
+                    errors.otp ? "border-red-500 focus:ring-red-500" : ""
+                  }`}
+                />
+                {errors.otp && (
+                  <p className="mt-1 text-xs text-red-600">{errors.otp}</p>
+                )}
+              </div>
+            </div>
+            {!otpVerified && otpSent && (
+              <button
+                onClick={handleVerifyOtpOnly}
+                disabled={loading}
+                className="w-full mb-4 bg-[#4F6EF7] text-white py-3 rounded-lg"
+              >
+                Verify OTP
+              </button>
+            )}
+
+            <div className="mb-6">
+              <label className="text-xs text-gray-500">Email</label>
+              <input
+                type="email"
+                placeholder="eg- abc@gmail.com"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  clearFieldError("email");
+                }}
+                className={`w-full mt-1 px-4 py-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#4F6EF7] ${
+                  errors.email ? "border-red-500 focus:ring-red-500" : ""
+                }`}
+              />
+              {errors.email && (
+                <p className="mt-1 text-xs text-red-600">{errors.email}</p>
+              )}
+            </div>
+            {otpVerified && (
+              <div className="mb-6">
+                <label className="text-xs text-gray-500">Password</label>
+                <input
+                  type="password"
+                  placeholder="Minimum 6 characters"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    clearFieldError("password");
+                  }}
+                  className={`w-full mt-1 px-4 py-3 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-[#4F6EF7] ${
+                    errors.password ? "border-red-500 focus:ring-red-500" : ""
+                  }`}
+                />
+                {errors.password && (
+                  <p className="mt-1 text-xs text-red-600">{errors.password}</p>
+                )}
+              </div>
+            )}
+
+            {/* Submit */}
+            <button
+              onClick={handleSignup}
+              className="w-full bg-[#4F6EF7] text-white py-3 rounded-lg font-medium hover:opacity-90 transition"
+            >
+              Sign up
+            </button>
+            {/* Already have an account */}
+            <span className="block mb-4 mt-4 text-xs sm:text-sm text-gray-700 text-center">
+              Already have an account?{" "}
+              <Link to="/doctor-login" className="text-[#4F6EF7] hover:underline">
+                Go to login page
+              </Link>
+            </span>
+
+            {errors.general && (
+              <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-xs sm:text-sm">
+                {errors.general}
+              </div>
+            )}
           </div>
         </div>
       </div>
