@@ -1,16 +1,43 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from "../../config/api.js";
 
-const API_BASE = "https://jensiebackend-1.onrender.com/api/doctor"; // adjust if needed
+const API_BASE = `${API_URL}/api/doctor`;
+
+const ERROR_MESSAGES = {
+  google_login_failed: "Google sign-in failed. Please try again.",
+  doctor_not_registered: "No doctor account found with this Google email. Please sign up first.",
+};
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Handle Google OAuth callback: token & error from URL
+  useEffect(() => {
+    const token = searchParams.get("token");
+    const doctorId = searchParams.get("doctorId");
+    const errorParam = searchParams.get("error");
+
+    if (errorParam) {
+      setError(ERROR_MESSAGES[errorParam] || "Something went wrong. Please try again.");
+      setSearchParams({}, { replace: true });
+      return;
+    }
+
+    if (token) {
+      localStorage.setItem("token", token);
+      if (doctorId) localStorage.setItem("doctorId", doctorId);
+      setSearchParams({}, { replace: true });
+      navigate("/dashboard", { replace: true });
+    }
+  }, [searchParams, setSearchParams, navigate]);
 
   const handleLogin = async () => {
     setError("");
@@ -147,6 +174,15 @@ export default function LoginPage() {
           >
             {loading ? "Signing in..." : "Sign in"}
           </button>
+          
+          {/* Don't have account? Link to signup */}
+          <div className="mt-4 text-center text-sm">
+            Don't have an account?{" "}
+            <Link to="/doctor-signup" className="text-[#4F6EF7] hover:underline font-medium">
+              Sign up
+            </Link>
+          </div>
+
            {/* Divider */}
           <div className="flex items-center my-6">
             <div className="flex-grow h-px bg-gray-200" />
@@ -158,8 +194,8 @@ export default function LoginPage() {
 
           {/* Google */}
           <button onClick={() =>
-    window.location.href = "https://jensiebackend-1.onrender.com/api/doctor/google"
-  }
+            (window.location.href = `${API_BASE}/google`)
+          }
            className="w-full border py-3 rounded-lg flex items-center justify-center gap-2 text-sm font-medium hover:bg-gray-50 transition">
             <img
               src="https://www.svgrepo.com/show/475656/google-color.svg"

@@ -1,6 +1,6 @@
   import { useState } from "react";
   import axios from "axios";
-  import { useNavigate } from "react-router-dom";
+  import { useNavigate, Link } from "react-router-dom";
 
 
   export default function Signup() {
@@ -190,13 +190,8 @@
               <p className="text-sm text-gray-500 mb-8">
                 Get started with secure, guided health support.
               </p>
-
-              {errors.general && (
-                <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
-                  {errors.general}
-                </div>
-              )}
-
+              
+             
               {/* Name */}
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
@@ -326,6 +321,20 @@
               >
                 Sign up
               </button>
+               {/* Added: Already have an account */}
+               <span className="block mb-4 mt-4 text-sm text-gray-700 text-center">
+                Already have an account?{" "}
+                <Link to="/doctor-login" className="text-[#4F6EF7] hover:underline">
+                  Go to login page
+                </Link>
+              </span>
+
+              {errors.general && (
+                <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
+                  {errors.general}
+                </div>
+              )}
+
 
 
             </div>
