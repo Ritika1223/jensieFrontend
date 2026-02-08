@@ -1,9 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
 import axios from "axios";
-import { API_URL } from "../../config/api.js";
 
-const API_BASE = `${API_URL}/api/doctor`;
+const API_BASE = `https://jensiebackend-1.onrender.com/api/doctor`;
 
 export default function Appointments() {
   const [appointments, setAppointments] = useState([]);

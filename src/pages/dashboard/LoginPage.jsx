@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const API_BASE = "http://localhost:3000/api/doctor"; // adjust if needed
+const API_BASE = "https://jensiebackend-1.onrender.com/api/doctor"; // adjust if needed
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -158,7 +158,7 @@ export default function LoginPage() {
 
           {/* Google */}
           <button onClick={() =>
-    window.location.href = "http://localhost:3000/api/doctor/google"
+    window.location.href = "https://jensiebackend-1.onrender.com/api/doctor/google"
   }
            className="w-full border py-3 rounded-lg flex items-center justify-center gap-2 text-sm font-medium hover:bg-gray-50 transition">
             <img

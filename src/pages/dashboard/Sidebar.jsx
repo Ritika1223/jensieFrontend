@@ -36,13 +36,13 @@ export default function Sidebar() {
     location.pathname === "/doctor-appointment" || location.pathname === "/doctor-schedule";
   const showAppointmentsExpanded = openAppointments || isAppointmentRoute;
 
-  // Logout handler
+  // Logout handler - replace: true so back button won't return to dashboard
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem("token");
     localStorage.removeItem("doctorId");
     localStorage.removeItem("doctorDetails");
-    navigate("/doctor-login");
+    navigate("/doctor-login", { replace: true });
     closeMobileMenu?.();
   };
 

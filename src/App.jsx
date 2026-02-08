@@ -2,6 +2,7 @@ import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+import DoctorProtectedRoute from './components/DoctorProtectedRoute';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { SidebarProvider } from './contexts/SidebarContext';
 
@@ -39,7 +40,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/doctors" element={<DoctorsListing />} />
 
-                      <Route element={<DashboardLayout />}>
+                      <Route element={<DoctorProtectedRoute><DashboardLayout /></DoctorProtectedRoute>}>
 
               <Route path="/dashboard" element={<DoctorDashboard />} />
              

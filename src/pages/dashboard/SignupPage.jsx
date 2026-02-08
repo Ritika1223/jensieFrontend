@@ -19,7 +19,7 @@
     // Inline validation errors (field key -> message)
     const [errors, setErrors] = useState({});
 
-    const API_BASE = "http://localhost:3000/api/doctor"; // change if needed
+    const API_BASE = "https://jensiebackend-1.onrender.com/api/doctor"; // change if needed
 
     const setFieldError = (field, message) => {
       setErrors((prev) => ({ ...prev, [field]: message }));
