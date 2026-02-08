@@ -1,0 +1,15 @@
+/* Optimized Button Styles - No infinite animations */
+
+.marcus-neon-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4facfe 100%);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.marcus-neon-btn:hover {
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+}
+
+.marcus-neon-btn:active {
+  transform: scale(0.98);
+}

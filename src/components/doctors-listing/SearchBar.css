@@ -1,0 +1,119 @@
+/* Animated Multi-Color Neon Border for SearchBar */
+
+.search-bar-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 443px;
+  padding: 2px;
+  border-radius: 9999px;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.search-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 9999px;
+  background: #f9f9f9;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.search-bar-wrapper:not(.search-bar-focused):hover .search-bar-inner {
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.search-bar-wrapper:not(.search-bar-focused):active .search-bar-inner {
+  transform: scale(0.99);
+}
+
+/* Animated neon border - rotating gradient */
+.search-bar-focused::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--angle, 0deg),
+    #667eea 0deg,
+    #f093fb 60deg,
+    #f5576c 120deg,
+    #4facfe 180deg,
+    #00f2fe 240deg,
+    #764ba2 300deg,
+    #667eea 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: rotateBorder 2s linear infinite;
+}
+
+/* Neon glow effect - blurred version behind */
+.search-bar-focused::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  background: conic-gradient(
+    from var(--angle, 0deg),
+    #667eea 0deg,
+    #f093fb 60deg,
+    #f5576c 120deg,
+    #4facfe 180deg,
+    #00f2fe 240deg,
+    #764ba2 300deg,
+    #667eea 360deg
+  );
+  filter: blur(18px);
+  opacity: 0.5;
+  animation: rotateBorder 2s linear infinite;
+  z-index: -1;
+}
+
+.search-bar-focused .search-bar-inner {
+  background: white;
+  border-color: transparent;
+  transform: scale(1.01);
+}
+
+/* Keyframes for rotating the gradient */
+@keyframes rotateBorder {
+  0% { --angle: 0deg; }
+  100% { --angle: 360deg; }
+}
+
+/* CSS Property for animating the angle */
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Fallback for browsers that don't support @property */
+@supports not (background: conic-gradient(from var(--angle), red, blue)) {
+  .search-bar-focused::before {
+    background: linear-gradient(90deg, #667eea, #f093fb, #f5576c, #4facfe, #00f2fe, #667eea);
+    background-size: 200% 200%;
+    animation: neonFlowFallback 2s linear infinite;
+  }
+  
+  .search-bar-focused::after {
+    background: linear-gradient(90deg, #667eea, #f093fb, #f5576c, #4facfe, #00f2fe, #667eea);
+    background-size: 200% 200%;
+    animation: neonFlowFallback 2s linear infinite;
+  }
+  
+  @keyframes neonFlowFallback {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+}

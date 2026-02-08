@@ -1,0 +1,102 @@
+/* Animated Multi-Color Neon Border for Chat Input */
+
+.chat-input-wrapper {
+  position: relative;
+  width: 100%;
+  padding: 3px;
+  border-radius: 1.5rem;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.chat-input-inner {
+  position: relative;
+  z-index: 1;
+  border-radius: calc(1.5rem - 3px);
+  transition: all 0.3s ease;
+}
+
+/* Animated neon border - rotating gradient */
+.chat-input-focused::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 1.5rem;
+  padding: 3px;
+  background: conic-gradient(
+    from var(--chat-angle, 0deg),
+    #667eea 0deg,
+    #f093fb 60deg,
+    #f5576c 120deg,
+    #4facfe 180deg,
+    #00f2fe 240deg,
+    #764ba2 300deg,
+    #667eea 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: rotateChatBorder 2.5s linear infinite;
+}
+
+/* Neon glow effect - blurred version behind */
+.chat-input-focused::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 2rem;
+  background: conic-gradient(
+    from var(--chat-angle, 0deg),
+    #667eea 0deg,
+    #f093fb 60deg,
+    #f5576c 120deg,
+    #4facfe 180deg,
+    #00f2fe 240deg,
+    #764ba2 300deg,
+    #667eea 360deg
+  );
+  filter: blur(20px);
+  opacity: 0.4;
+  animation: rotateChatBorder 2.5s linear infinite;
+  z-index: -1;
+}
+
+/* Dark mode adjustments */
+.chat-input-focused.dark-mode::after {
+  opacity: 0.5;
+  filter: blur(25px);
+}
+
+/* Keyframes for rotating the gradient */
+@keyframes rotateChatBorder {
+  0% { --chat-angle: 0deg; }
+  100% { --chat-angle: 360deg; }
+}
+
+/* CSS Property for animating the angle */
+@property --chat-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Fallback for browsers that don't support @property */
+@supports not (background: conic-gradient(from var(--chat-angle), red, blue)) {
+  .chat-input-focused::before {
+    background: linear-gradient(90deg, #667eea, #f093fb, #f5576c, #4facfe, #00f2fe, #667eea);
+    background-size: 200% 200%;
+    animation: neonChatFlowFallback 2s linear infinite;
+  }
+  
+  .chat-input-focused::after {
+    background: linear-gradient(90deg, #667eea, #f093fb, #f5576c, #4facfe, #00f2fe, #667eea);
+    background-size: 200% 200%;
+    animation: neonChatFlowFallback 2s linear infinite;
+  }
+  
+  @keyframes neonChatFlowFallback {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+}

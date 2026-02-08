@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    
+    <!-- Critical Performance Optimizations for Low Internet Speed -->
+    <!-- DNS Prefetch and Preconnect for external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    
+    <!-- Preload critical font with font-display: swap for faster text rendering -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" as="style" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" />
+    </noscript>
+    
+    <link rel="icon" type="image/svg+xml" href="/jensei-favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="AI Assistance You Can Trust With Your Health - Jensei brings AI to the heart of healthcare" />
+    
+    <!-- Performance Hints -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="theme-color" content="#ffffff" />
+    
+    <!-- Preload critical above-the-fold assets -->
+    <link rel="preload" href="/jensei-logo.png" as="image" />
+    <link rel="preload" href="/landing-page/sidebar-image.png" as="image" fetchpriority="high" />
+    
+    <title>Jensei | AI Healthcare</title>
+    
+    <!-- Critical CSS for instant loading feedback -->
+    <style>
+      /* Critical CSS - Inline for instant render */
+      *,*::before,*::after{box-sizing:border-box}
+      html{-webkit-text-size-adjust:100%;line-height:1.5}
+      body{margin:0;font-family:'Poppins',system-ui,-apple-system,sans-serif;background-color:#f5f5f5}
+      #root{min-height:100vh}
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Fallback for no JavaScript -->
+    <noscript>
+      <div style="padding: 40px; text-align: center; font-family: system-ui, sans-serif;">
+        <h1>JavaScript Required</h1>
+        <p>Please enable JavaScript to use Jensei AI Healthcare.</p>
+      </div>
+    </noscript>
+  </body>
+</html>

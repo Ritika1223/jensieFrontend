@@ -1,0 +1,13 @@
+export { default as HomePage } from './HomePage';
+export { default as Dashboard } from './Dashboard';
+export { default as DoctorsListing } from './DoctorsListing';
+export { default as DoctorProfile } from './DoctorProfile';
+export { default as ChatPage } from './ChatPage';
+export { default as About } from './About';
+export { default as Contact } from './Contact';
+export { default as Signup } from './Signup';
+export { default as Login } from './Login';
+export { default as VerifyOTP } from './VerifyOTP';
+export { default as ForgotPassword } from './ForgotPassword';
+export { default as ResetPassword } from './ResetPassword';
+export { default as DoctorOnboarding } from './DoctorOnboarding';

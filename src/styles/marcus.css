@@ -1,0 +1,420 @@
+/* Marcus Sphere - Centralized Optimized Styles */
+/* Exact visual match with performance optimizations - Premium Entry Feel */
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .marcus-float-wrapper,
+  .marcus-vibe-sphere,
+  .marcus-orb-1,
+  .marcus-orb-2,
+  .marcus-orb-3,
+  .marcus-inner-glow,
+  .marcus-shimmer-ring,
+  .marcus-msg,
+  .marcus-searching .marcus-vibe-sphere {
+    animation: none !important;
+  }
+  .marcus-container {
+    transition-duration: 0.01ms !important;
+  }
+  .marcus-entry {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: scale(1) translateY(0) !important;
+  }
+}
+
+/* Premium Entry Animation - Smooth, Premium Feel */
+.marcus-entry {
+  animation: marcusEntry 800ms cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes marcusEntry {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(20px);
+  }
+  60% {
+    opacity: 0.9;
+    transform: scale(1.05) translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Container - simplified transitions */
+.marcus-container {
+  transition: 
+    top 600ms ease-out,
+    left 600ms ease-out,
+    opacity 200ms ease-out;
+}
+
+/* Fade animation state */
+.marcus-container.marcus-fading {
+  transition: opacity 200ms ease-out;
+}
+
+.marcus-container.marcus-searching {
+  filter: drop-shadow(0 8px 32px rgba(102, 126, 234, 0.4));
+}
+
+.marcus-container:not(.marcus-searching) {
+  filter: drop-shadow(0 4px 16px rgba(102, 126, 234, 0.2));
+}
+
+/* Dynamic Size Classes - Responsive to page/context */
+/* Small sizes */
+.marcus-size-sm {
+  width: 56px;
+  height: 56px;
+}
+
+.marcus-size-sm2 {
+  width: 64px;
+  height: 64px;
+}
+
+.marcus-size-sm3 {
+  width: 72px;
+  height: 72px;
+}
+
+/* Medium sizes */
+.marcus-size-md {
+  width: 80px;
+  height: 80px;
+}
+
+.marcus-size-md2 {
+  width: 96px;
+  height: 96px;
+}
+
+.marcus-size-md3 {
+  width: 112px;
+  height: 112px;
+}
+
+/* Large sizes */
+.marcus-size-lg {
+  width: 120px;
+  height: 120px;
+}
+
+.marcus-size-lg2 {
+  width: 140px;
+  height: 140px;
+}
+
+.marcus-size-lg3 {
+  width: 160px;
+  height: 160px;
+}
+
+/* Responsive sizing based on viewport */
+@media (max-width: 640px) {
+  .marcus-size-responsive {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .marcus-size-responsive {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .marcus-size-responsive {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+/* Float animation - simplified for performance */
+.marcus-float-wrapper {
+  animation: marcusFloat 8s ease-in-out infinite;
+}
+
+/* Main sphere - SIMPLIFIED: single animation only */
+.marcus-vibe-sphere {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4facfe 100%);
+  background-size: 200% 200%;
+  animation: vibeFlow 12s ease-in-out infinite;
+  position: relative;
+  box-shadow: 
+    inset 0 0 15px rgba(255, 255, 255, 0.3),
+    0 0 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Simplified edge effect - no animation */
+.marcus-vibe-sphere::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.6), rgba(240, 147, 251, 0.6));
+  z-index: -1;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Static shine effect - no animation */
+.marcus-vibe-sphere::after {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: 25%;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Searching state - single animation */
+.marcus-searching .marcus-vibe-sphere {
+  animation: vibeFlow 6s ease-in-out infinite;
+}
+
+/* Orb animations - DISABLED for performance */
+.marcus-orb-1, .marcus-orb-2, .marcus-orb-3 { 
+  animation: none;
+}
+
+.marcus-inner-glow { 
+  animation: none;
+  opacity: 0.7;
+}
+
+.marcus-shimmer-ring { 
+  animation: none;
+  opacity: 0.5;
+}
+
+/* Message bubble - Stable, no animations */
+.marcus-msg {
+  transition: opacity 300ms ease-out;
+}
+
+.marcus-searching .marcus-msg {
+  opacity: 1 !important;
+}
+
+.marcus-msg span {
+  animation: none;
+}
+
+/* Responsive message sizing - Note: inline styles in component override this for exact visual match */
+.marcus-size-sm .marcus-msg,
+.marcus-size-sm2 .marcus-msg,
+.marcus-size-sm3 .marcus-msg {
+  font-size: 11px;
+  padding: 5px 9px;
+}
+
+.marcus-size-md .marcus-msg,
+.marcus-size-md2 .marcus-msg,
+.marcus-size-md3 .marcus-msg {
+  font-size: 11px;
+  padding: 5px 9px;
+}
+
+.marcus-size-lg .marcus-msg,
+.marcus-size-lg2 .marcus-msg,
+.marcus-size-lg3 .marcus-msg {
+  font-size: 13px;
+  padding: 6px 11px;
+}
+
+/* Keyframe animations - EXACT from original implementation */
+@keyframes marcusFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-12px) rotate(3deg); }
+  50% { transform: translateY(-5px) rotate(-2deg); }
+  75% { transform: translateY(-15px) rotate(2deg); }
+}
+
+@keyframes vibeFlow {
+  0% { background-position: 0% 0%; }
+  16.66% { background-position: 100% 25%; }
+  33.33% { background-position: 50% 75%; }
+  50% { background-position: 100% 100%; }
+  66.66% { background-position: 25% 50%; }
+  83.33% { background-position: 75% 0%; }
+  100% { background-position: 0% 0%; }
+}
+
+/* Enhanced color pulse - creates multiple color variations using filter */
+@keyframes colorPulse {
+  0%, 100% { 
+    filter: hue-rotate(0deg) saturate(1) brightness(1);
+  }
+  12.5% { 
+    filter: hue-rotate(30deg) saturate(1.1) brightness(1.03);
+  }
+  25% { 
+    filter: hue-rotate(60deg) saturate(1.15) brightness(1.05);
+  }
+  37.5% { 
+    filter: hue-rotate(90deg) saturate(1.1) brightness(1.08);
+  }
+  50% { 
+    filter: hue-rotate(120deg) saturate(1.2) brightness(1.1);
+  }
+  62.5% { 
+    filter: hue-rotate(150deg) saturate(1.15) brightness(1.08);
+  }
+  75% { 
+    filter: hue-rotate(180deg) saturate(1.2) brightness(1.05);
+  }
+  87.5% { 
+    filter: hue-rotate(210deg) saturate(1.15) brightness(1.03);
+  }
+}
+
+/* Realistic edge gradient animation - rotating border */
+@keyframes edgeGradient {
+  0%, 100% { 
+    transform: rotate(0deg);
+    opacity: 0.9;
+    filter: brightness(1) hue-rotate(0deg);
+  }
+  25% { 
+    transform: rotate(90deg);
+    opacity: 1;
+    filter: brightness(1.2) hue-rotate(45deg);
+  }
+  50% { 
+    transform: rotate(180deg);
+    opacity: 0.85;
+    filter: brightness(1) hue-rotate(90deg);
+  }
+  75% { 
+    transform: rotate(270deg);
+    opacity: 0.95;
+    filter: brightness(1.1) hue-rotate(135deg);
+  }
+}
+
+/* Realistic edge highlight - moving shine */
+@keyframes edgeHighlight {
+  0%, 100% { 
+    top: 10%; 
+    left: 20%; 
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  25% { 
+    top: 20%; 
+    left: 60%; 
+    opacity: 0.7;
+    transform: scale(1.2);
+  }
+  50% { 
+    top: 60%; 
+    left: 40%; 
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  75% { 
+    top: 40%; 
+    left: 10%; 
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes auraGlow {
+  0%, 100% { 
+    box-shadow: 0 0 25px rgba(255, 107, 157, 0.9), 
+                0 0 50px rgba(196, 76, 224, 0.7), 
+                0 0 75px rgba(76, 201, 240, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.4); 
+  }
+  33% { 
+    box-shadow: 0 0 30px rgba(76, 201, 240, 0.9), 
+                0 0 60px rgba(128, 237, 153, 0.7), 
+                0 0 90px rgba(249, 199, 79, 0.5),
+                inset 0 0 25px rgba(255, 255, 255, 0.5); 
+  }
+  66% { 
+    box-shadow: 0 0 35px rgba(196, 76, 224, 0.9), 
+                0 0 70px rgba(255, 107, 157, 0.7), 
+                0 0 100px rgba(128, 237, 153, 0.5),
+                inset 0 0 30px rgba(255, 255, 255, 0.45); 
+  }
+}
+
+@keyframes marcusPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.9; }
+  20% { transform: translate(8px, -6px) scale(1.2); opacity: 1; }
+  40% { transform: translate(-4px, 9px) scale(0.9); opacity: 0.8; }
+  60% { transform: translate(10px, 5px) scale(1.1); opacity: 1; }
+  80% { transform: translate(-6px, -4px) scale(1.05); opacity: 0.85; }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1.1); opacity: 0.85; }
+  25% { transform: translate(-9px, 4px) scale(0.95); opacity: 1; }
+  50% { transform: translate(6px, -7px) scale(1.25); opacity: 0.9; }
+  75% { transform: translate(-2px, 6px) scale(1); opacity: 0.95; }
+}
+
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate(0, 0) scale(0.95); opacity: 0.9; }
+  33% { transform: translate(5px, 7px) scale(1.15); opacity: 1; }
+  66% { transform: translate(-7px, -5px) scale(1.05); opacity: 0.85; }
+}
+
+@keyframes innerGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.1); }
+}
+
+@keyframes shimmer {
+  0% { transform: rotate(0deg); opacity: 0.5; }
+  50% { opacity: 0.8; }
+  100% { transform: rotate(360deg); opacity: 0.5; }
+}
+
+@keyframes marcusWave {
+  0%, 20%, 100% { opacity: 0; transform: translateY(5px) scale(0.9); }
+  5%, 15% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes messageFade {
+  0% { opacity: 0; transform: translateY(3px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes messageFadeIn {
+  0% { opacity: 0; transform: translateY(4px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Wiggle animation on click - playful interaction feedback */
+@keyframes marcusWiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  15% { transform: rotate(-12deg) scale(1.05); }
+  30% { transform: rotate(10deg) scale(1.02); }
+  45% { transform: rotate(-8deg) scale(1.03); }
+  60% { transform: rotate(6deg) scale(1.01); }
+  75% { transform: rotate(-4deg) scale(1.02); }
+  90% { transform: rotate(2deg) scale(1); }
+}
+
+.marcus-wiggle .marcus-vibe-sphere {
+  animation: marcusWiggle 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) !important;
+}
