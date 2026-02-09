@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Star } from "lucide-react";
-import { API_URL } from "../../config/api.js";
 
-const API_BASE = `${API_URL}/api/doctor`;
+const API_BASE = `https://jensiebackend-1.onrender.com/api/doctor`;
 const DEMO_DOCTOR_IMAGE = "/landing-page/doctors/doctor-1.png";
 
 export default function DoctorProfileMain(props) {
