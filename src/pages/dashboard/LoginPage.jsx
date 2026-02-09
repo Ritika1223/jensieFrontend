@@ -3,7 +3,7 @@ import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../config/api.js";
 
-const API_BASE = `${API_URL}/api/doctor`;
+const API_BASE = `https://jensiebackend-1.onrender.com/api/doctor`;
 
 const ERROR_MESSAGES = {
   google_login_failed: "Google sign-in failed. Please try again.",
