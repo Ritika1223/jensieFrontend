@@ -24,7 +24,7 @@ import {
   X,
 } from "lucide-react";
 
-const API_BASE = `${API_URL}/api/doctor`;
+const API_BASE = `https://jensiebackend-1.onrender.com/api/doctor`;
 
 // Demo doctor image (from public folder) – used when no image from API or on load error
 const DEMO_DOCTOR_IMAGE = "/landing-page/doctors/doctor-1.png";
